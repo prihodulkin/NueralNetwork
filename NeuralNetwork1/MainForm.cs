@@ -43,7 +43,7 @@ namespace AForge.WindowsForms
         /// Таймер для измерения производительности (времени на обработку кадра)
         /// </summary>
         private Stopwatch sw = new Stopwatch();
-        
+
         /// <summary>
         /// Таймер для обновления объектов интерфейса
         /// </summary>
@@ -66,7 +66,8 @@ namespace AForge.WindowsForms
             sw.Stop();
             ticksLabel.Text = "Тики : " + sw.Elapsed.ToString();
             originalImageBox.Image = controller.GetOriginalImage();
-            processedImgBox.Image = controller.GetProcessedImage();
+           
+            //processedImgBox.Image = controller.GetProcessedImage();
         }
 
         /// <summary>
@@ -238,8 +239,6 @@ namespace AForge.WindowsForms
             this.StartButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.originalImageBox = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.processedImgBox = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -256,8 +255,6 @@ namespace AForge.WindowsForms
             this.resolutionsBox = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.processedImgBox)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tresholdTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.marginTrackBar)).BeginInit();
@@ -321,27 +318,6 @@ namespace AForge.WindowsForms
             this.originalImageBox.TabIndex = 1;
             this.originalImageBox.TabStop = false;
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.processedImgBox);
-            this.panel1.Location = new System.Drawing.Point(778, 18);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(666, 682);
-            this.panel1.TabIndex = 12;
-            // 
-            // processedImgBox
-            // 
-            this.processedImgBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.processedImgBox.Location = new System.Drawing.Point(0, 0);
-            this.processedImgBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.processedImgBox.Name = "processedImgBox";
-            this.processedImgBox.Size = new System.Drawing.Size(662, 678);
-            this.processedImgBox.TabIndex = 0;
-            this.processedImgBox.TabStop = false;
-            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -352,7 +328,7 @@ namespace AForge.WindowsForms
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.marginTrackBar);
             this.panel2.Controls.Add(this.borderTrackBar);
-            this.panel2.Location = new System.Drawing.Point(778, 712);
+            this.panel2.Location = new System.Drawing.Point(778, 14);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(662, 310);
@@ -466,7 +442,7 @@ namespace AForge.WindowsForms
             this.controlPanel.Controls.Add(this.ProcessButton);
             this.controlPanel.Controls.Add(this.PlayButton);
             this.controlPanel.Enabled = false;
-            this.controlPanel.Location = new System.Drawing.Point(780, 1034);
+            this.controlPanel.Location = new System.Drawing.Point(778, 354);
             this.controlPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.controlPanel.Name = "controlPanel";
             this.controlPanel.Size = new System.Drawing.Size(665, 90);
@@ -517,7 +493,6 @@ namespace AForge.WindowsForms
             this.Controls.Add(this.ticksLabel);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.label1);
@@ -531,8 +506,6 @@ namespace AForge.WindowsForms
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).EndInit();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.processedImgBox)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tresholdTrackBar)).EndInit();
@@ -550,7 +523,6 @@ namespace AForge.WindowsForms
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.PictureBox originalImageBox;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
@@ -563,7 +535,6 @@ namespace AForge.WindowsForms
         private System.Windows.Forms.Panel controlPanel;
         private System.Windows.Forms.Button ProcessButton;
         private System.Windows.Forms.Button PlayButton;
-        private System.Windows.Forms.PictureBox processedImgBox;
         private System.Windows.Forms.ComboBox resolutionsBox;
         private System.Windows.Forms.CheckBox checkBox1;
     }

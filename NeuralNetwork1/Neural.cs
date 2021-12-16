@@ -7,12 +7,12 @@ namespace NeuralNetwork1
     /// <summary>
     /// Класс для хранения образа – входной массив сигналов на сенсорах, выходные сигналы сети, и прочее
     /// </summary>
-    public class Sample
+    public class Sample<T> where T : ISampleData, new()
     {
         /// <summary>
         /// Входной вектор
         /// </summary>
-        public double[] input = null;
+    public double[] input = null;
 
         /// <summary>
         /// Вектор ошибки, вычисляется по какой-нибудь хитрой формуле
@@ -22,27 +22,27 @@ namespace NeuralNetwork1
         /// <summary>
         /// Действительный класс образа. Указывается учителем
         /// </summary>
-        public FigureType actualClass;
+        public T actualClass;
 
         /// <summary>
         /// Распознанный класс - определяется после обработки
         /// </summary>
-        public FigureType recognizedClass;
+        public T recognizedClass;
 
         /// <summary>
         /// Конструктор образа - на основе входных данных для сенсоров, при этом можно указать класс образа, или не указывать
         /// </summary>
         /// <param name="inputValues"></param>
         /// <param name="sampleClass"></param>
-        public Sample(double[] inputValues, int classesCount, FigureType sampleClass = FigureType.Undef)
+        public Sample(double[] inputValues, int classesCount, T sampleClass)
         {
             //  Клонируем массивчик
             input = (double[]) inputValues.Clone();
             Output = new double[classesCount];
-            if (sampleClass != FigureType.Undef) Output[(int) sampleClass] = 1;
+            if (!sampleClass.IsUndefined()) Output[sampleClass.ToInt()] = 1;
 
 
-            recognizedClass = FigureType.Undef;
+            recognizedClass = new T();
             actualClass = sampleClass;
         }
 
@@ -54,18 +54,22 @@ namespace NeuralNetwork1
         /// <summary>
         /// Обработка реакции сети на данный образ на основе вектора выходов сети
         /// </summary>
-        public FigureType ProcessPrediction(double[] neuralOutput)
+        public T ProcessPrediction(double[] neuralOutput)
         {
             Output = neuralOutput;
             if (error == null)
                 error = new double[Output.Length];
 
             //  Нам так-то выход не нужен, нужна ошибка и определённый класс
-            recognizedClass = 0;
+            recognizedClass = new T();
+            recognizedClass.ByInt(0);
             for (int i = 0; i < Output.Length; ++i)
             {
-                error[i] = (Output[i] - (i == (int) actualClass ? 1 : 0));
-                if (Output[i] > Output[(int) recognizedClass]) recognizedClass = (FigureType) i;
+                error[i] = (Output[i] - (i == actualClass.ToInt() ? 1 : 0));
+                if (Output[i] > Output[recognizedClass.ToInt()])
+                { 
+                    recognizedClass.ByInt(i);
+                }
             }
 
             return recognizedClass;
@@ -100,7 +104,7 @@ namespace NeuralNetwork1
         /// <returns></returns>
         public override string ToString()
         {
-            string result = "Sample decoding : " + actualClass.ToString() + "(" + ((int) actualClass).ToString() +
+            string result = "Sample decoding : " + actualClass.ToString() + "(" + ( actualClass.ToInt()).ToString() +
                             "); " + Environment.NewLine + "Input : ";
             for (int i = 0; i < input.Length; ++i) result += input[i].ToString() + "; ";
             result += Environment.NewLine + "Output : ";
@@ -115,7 +119,7 @@ namespace NeuralNetwork1
                 for (int i = 0; i < error.Length; ++i)
                     result += error[i].ToString() + "; ";
             result += Environment.NewLine + "Recognized : " + recognizedClass.ToString() + "(" +
-                      ((int) recognizedClass).ToString() + "); " + Environment.NewLine;
+                      (recognizedClass.ToInt()).ToString() + "); " + Environment.NewLine;
 
 
             return result;
@@ -127,25 +131,25 @@ namespace NeuralNetwork1
         /// <returns></returns>
         public bool Correct()
         {
-            return actualClass == recognizedClass;
+            return actualClass.Equals(recognizedClass);
         }
     }
 
     /// <summary>
     /// Выборка образов. Могут быть как классифицированные (обучающая, тестовая выборки), так и не классифицированные (обработка)
     /// </summary>
-    public class SamplesSet : IEnumerable
+    public class SamplesSet<T> : IEnumerable where T: ISampleData, new()
     {
         /// <summary>
         /// Накопленные обучающие образы
         /// </summary>
-        public List<Sample> samples = new List<Sample>();
+        public List<Sample<T>> samples = new List<Sample<T>>();
 
         /// <summary>
         /// Добавление образа к коллекции
         /// </summary>
         /// <param name="image"></param>
-        public void AddSample(Sample image)
+        public void AddSample(Sample<T> image)
         {
             samples.Add(image);
         }
@@ -162,19 +166,19 @@ namespace NeuralNetwork1
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Sample this[int i]
+        public Sample<T> this[int i]
         {
             get => samples[i];
             set => samples[i] = value;
         }
 
-        public double TestNeuralNetwork(BaseNetwork network)
+        public double TestNeuralNetwork(BaseNetwork<T> network)
         {
             double correct = 0;
             double wrong = 0;
             foreach (var sample in samples)
             {
-                if (sample.actualClass == network.Predict(sample)) ++correct;
+                if (sample.actualClass.Equals(network.Predict(sample))) ++correct;
                 else ++wrong;
             }
             return correct / (correct + wrong);

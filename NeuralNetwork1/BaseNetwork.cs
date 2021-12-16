@@ -6,7 +6,7 @@ namespace NeuralNetwork1
     /// <summary>
     /// Базовый класс для реализации как самодельного персептрона, так и обёртки для ActivationNetwork из Accord.Network
     /// </summary>
-    public abstract class BaseNetwork
+    public abstract class BaseNetwork<T> where T : ISampleData, new()
     {
         // Событие обновления прогресса обучения (форма подписывается для того чтобы знать о том, сколько процентов работы сделано, и обновлять прогрессбар)
         public event TrainProgressHandler TrainProgress;
@@ -20,7 +20,7 @@ namespace NeuralNetwork1
         ///     Для реализации распараллеливания можно использовать System.Threading.Tasks.Parallel.For https://metanit.com/sharp/tutorial/12.4.php
         /// </param>
         /// <returns>Количество итераций для достижения заданного уровня ошибки</returns>
-        public abstract int Train(Sample sample, double acceptableError, bool parallel);
+        public abstract int Train(Sample<T> sample, double acceptableError, bool parallel);
         /// <summary>
         /// Обучение сети на основе датасета
         /// </summary>
@@ -29,7 +29,7 @@ namespace NeuralNetwork1
         /// <param name="acceptableError">Желаемый уровень ошибки</param>
         /// <param name="parallel">Распараллеливать ли обучение</param>
         /// <returns></returns>
-        public abstract double TrainOnDataSet(SamplesSet samplesSet, int epochsCount, double acceptableError, bool parallel);
+        public abstract double TrainOnDataSet(SamplesSet<T> samplesSet, int epochsCount, double acceptableError, bool parallel);
 
         /// <summary>
         /// Подсчёт результата работы сети на данном входе.
@@ -43,7 +43,7 @@ namespace NeuralNetwork1
         /// </summary>
         /// <param name="sample">Фигура, которую необходимо определить</param>
         /// <returns></returns>
-        public FigureType Predict(Sample sample)
+        public T Predict(Sample<T> sample)
         {
             return sample.ProcessPrediction(Compute(sample.input));
         }

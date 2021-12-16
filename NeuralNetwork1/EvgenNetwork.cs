@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork1
 {
-    class EvgenNetwork:BaseNetwork
+    class EvgenNetwork<T>:BaseNetwork<T> where T: ISampleData, new()
     {
         private double [][,] Weights;
         private double[][] Values;
@@ -158,7 +158,7 @@ namespace NeuralNetwork1
             }
         }
 
-        private int SimpleTrain(Sample sample, double acceptableError)
+        private int SimpleTrain(Sample<T> sample, double acceptableError)
         {
             int iters = 1;
             while (Error(sample.Output) > acceptableError)
@@ -172,7 +172,7 @@ namespace NeuralNetwork1
             return iters;
         }
 
-        private int ParallelTrain(Sample sample, double acceptableError)
+        private int ParallelTrain(Sample<T> sample, double acceptableError)
         {
             int iters = 1;
             while (Error(sample.Output) > acceptableError)
@@ -186,13 +186,13 @@ namespace NeuralNetwork1
             return iters;
         }
 
-        public override int Train(Sample sample, double acceptableError, bool parallel)
+        public override int Train(Sample<T> sample, double acceptableError, bool parallel)
         {
             return parallel ?ParallelTrain(sample, acceptableError):SimpleTrain(sample, acceptableError);
         }
 
 
-        public override double TrainOnDataSet(SamplesSet samplesSet, int epochsCount, double acceptableError, bool parallel)
+        public override double TrainOnDataSet(SamplesSet<T> samplesSet, int epochsCount, double acceptableError, bool parallel)
         {
             //  Сначала надо сконструировать массивы входов и выходов
             double[][] inputs = new double[samplesSet.Count][];

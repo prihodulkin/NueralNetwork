@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -7,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork1
 {
-    interface IGenerator
+    interface IGenerator<T> where T: ISampleData,  new()
     {
         int ClassesCount { get; set; }
-        Sample GenerateFigure();
+        Sample<T> GenerateFigure();
         Bitmap GenerateBitmap();
+
+        
     }
 }

@@ -16,11 +16,11 @@ namespace NeuralNetwork1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NeuralNetworksStand(new Dictionary<string, Func<int[], BaseNetwork>>
+            Application.Run(new NeuralNetworksStand(new Dictionary<string, Func<int[], BaseNetwork<FigureSampleData>>>
             {
                 // Тут можно добавить свои нейросети
-                {"Accord.Network Perseptron", structure => new AccordNet(structure)},
-                {"Студентческий персептрон", structure => new EvgenNetwork(structure)},
+                {"Accord.Network Perseptron", structure => new AccordNet<FigureSampleData>(structure)},
+                {"Студентческий персептрон", structure => new EvgenNetwork<FigureSampleData>(structure)},
             }));
         }
     }

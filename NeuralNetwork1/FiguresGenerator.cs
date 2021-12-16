@@ -11,8 +11,51 @@ namespace NeuralNetwork1
     /// Тип фигуры
     /// </summary>
     public enum FigureType : byte { Triangle = 0, Rectangle, Circle, Sinusiod, Undef };
-    
-    public class FiguresGenerator:IGenerator
+
+    public class FigureSampleData : ISampleData
+    {
+        public FigureType FigureType { get; private set; }
+
+        public FigureSampleData(){}
+
+        public FigureSampleData(FigureType figureType)
+        {
+            FigureType = figureType;
+        }
+
+        public void ByInt(int i)
+        {
+            FigureType = (FigureType) i;
+        }
+
+        public bool IsUndefined()
+        {
+            return FigureType == FigureType.Undef;
+        }
+
+        public int ToInt()
+        {
+            return (int) FigureType;
+        }
+
+        public bool Equals(ISampleData other)
+        {
+            if (other is FigureSampleData)
+            {
+                return FigureType == (other as FigureSampleData).FigureType;
+            }
+
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return FigureType.ToString();
+        }
+    }
+
+
+    public class FiguresGenerator: IGenerator<FigureSampleData>
     {
         /// <summary>
         /// Бинарное представление образа
@@ -57,7 +100,7 @@ namespace NeuralNetwork1
                     img[i, j] = false;
         }
 
-       public Sample GenerateFigure()
+       public Sample<FigureSampleData> GenerateFigure()
         {
             generate_figure();
             double[] input = new double[400];
@@ -73,7 +116,7 @@ namespace NeuralNetwork1
                         input[i] += 1;
                         input[200 + j] += 1;
                     }
-            return new Sample(input, ClassesCount, type);
+            return new Sample<FigureSampleData>(input, ClassesCount, new FigureSampleData(type));
         }
 
         private Point GetLeftUpperPoint()
@@ -253,6 +296,7 @@ namespace NeuralNetwork1
                         drawArea.SetPixel(i, j, Color.Black);
             return drawArea;
         }
+
     }
 
 }

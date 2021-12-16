@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork1
 {
-    class NetworkProvider
+    class NetworkProvider<T> where T: ISampleData, new()
     {
-        public static NetworkProvider Get()
+        public static NetworkProvider<T> Get()
         {
             if (provider == null)
             {
-                provider = new NetworkProvider();
+                provider = new NetworkProvider<T>();
             }
             return provider;
         }
 
-        private static NetworkProvider provider;
+        private static NetworkProvider<T> provider;
 
-        public BaseNetwork Network
+        public BaseNetwork<T> Network
         {
             get
             {
@@ -31,7 +31,7 @@ namespace NeuralNetwork1
         }
 
         public void Init(string selectedNetwork,
-            Dictionary<string, Func<int[], BaseNetwork>> networksFabric,
+            Dictionary<string, Func<int[], BaseNetwork<T>>> networksFabric,
             int[] networkStructure,
             TrainProgressHandler updateLearningInfo)
         {
@@ -51,7 +51,7 @@ namespace NeuralNetwork1
                 oldNet.Key, oldNet => CreateNetwork(oldNet.Key));
         }
         
-        private BaseNetwork CreateNetwork(string networkName)
+        private BaseNetwork<T> CreateNetwork(string networkName)
         {
             var network = networksFabric[networkName](NetworkStructure);
             network.TrainProgress += UpdateLearningInfo;
@@ -61,8 +61,8 @@ namespace NeuralNetwork1
         public TrainProgressHandler UpdateLearningInfo { get; set; }
         public int[] NetworkStructure { get; set; }
         public string SelectedNetwork { get; set; }
-        private Dictionary<string, Func<int[], BaseNetwork>> networksFabric;
-        private Dictionary<string, BaseNetwork> networksCache = new Dictionary<string, BaseNetwork>();
+        private Dictionary<string, Func<int[], BaseNetwork<T>>> networksFabric;
+        private Dictionary<string, BaseNetwork<T>> networksCache = new Dictionary<string, BaseNetwork<T>>();
 
     }
 }
