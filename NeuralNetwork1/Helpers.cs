@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NeuralNetwork1
+{
+    static class Helpers
+    {
+        public static void MutliplyAndApplySigmoid(this double[] vector, double [,] matrix, double[] result)
+        {
+            var rowsCount = matrix.GetLength(0);
+            var colCount = matrix.GetLength(1);
+            for (int i = 0; i <colCount ; i++)
+            {
+                double sum = 0;
+                for(int j = 0; j <rowsCount; j++)
+                {
+                    sum += vector[j] * matrix[j, i];
+                }
+                result[i] = sum.Sigmoid();
+            }  
+        }
+
+        public static void MutliplyAndApplySigmoidParallel(this double[] vector, double[,] matrix, double[] result)
+        {
+            var rowsCount = matrix.GetLength(0);
+            var colCount = matrix.GetLength(1);
+            for (int i = 0; i < colCount; i++)
+            {
+                double sum = 0;
+                Parallel.For(0, rowsCount, (j) => sum += vector[j] * matrix[j, i]);
+                result[i] = sum.Sigmoid();
+            }
+        }
+
+        public static double Sigmoid(this double value)
+        {
+            return 1.0 / (Math.Exp(-value) + 1);
+        }
+
+       
+    }
+}
