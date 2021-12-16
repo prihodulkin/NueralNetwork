@@ -67,7 +67,7 @@ namespace NeuralNetwork1
         {
             Sample fig = generator.GenerateFigure();
 
-            NetworkProvider.Get().Net.Predict(fig);
+            NetworkProvider.Get().Network.Predict(fig);
 
             set_result(fig);
         }
@@ -90,7 +90,7 @@ namespace NeuralNetwork1
             try
             {
                 //  Обучение запускаем асинхронно, чтобы не блокировать форму
-                var curNet = NetworkProvider.Get().Net;
+                var curNet = NetworkProvider.Get().Network;
                 double f = await Task.Run(() => curNet.TrainOnDataSet(samples, epoches, acceptable_error, parallel));
                 label1.Text = "Щелкните на картинку для теста нового образа";
                 label1.ForeColor = Color.Green;
@@ -127,7 +127,7 @@ namespace NeuralNetwork1
             for (int i = 0; i < (int) TrainingSizeCounter.Value; i++)
                 samples.AddSample(generator.GenerateFigure());
 
-            double accuracy = samples.TestNeuralNetwork(NetworkProvider.Get().Net);
+            double accuracy = samples.TestNeuralNetwork(NetworkProvider.Get().Network);
 
             StatusLabel.Text = $"Точность на тестовой выборке : {accuracy * 100,5:F2}%";
             StatusLabel.ForeColor = accuracy * 100 >= AccuracyCounter.Value ? Color.Green : Color.Red;
@@ -169,11 +169,11 @@ namespace NeuralNetwork1
 
         private void btnTrainOne_Click(object sender, EventArgs e)
         {
-            if (NetworkProvider.Get().Net == null) return;
+            if (NetworkProvider.Get().Network == null) return;
             Sample fig = generator.GenerateFigure();
             pictureBox1.Image = generator.GenerateBitmap();
             pictureBox1.Invalidate();
-            NetworkProvider.Get().Net.Train(fig, 0.00005, parallelCheckBox.Checked);
+            NetworkProvider.Get().Network.Train(fig, 0.00005, parallelCheckBox.Checked);
             set_result(fig);
         }
 

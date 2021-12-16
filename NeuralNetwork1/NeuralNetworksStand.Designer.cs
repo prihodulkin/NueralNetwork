@@ -36,6 +36,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.testNetWithCameraButton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.netTypeBox = new System.Windows.Forms.ComboBox();
             this.parallelCheckBox = new System.Windows.Forms.CheckBox();
@@ -57,7 +58,6 @@
             this.elapsedTimeLabel = new System.Windows.Forms.Label();
             this.вапрвапрToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusLabel = new System.Windows.Forms.Label();
-            this.testNetWithCameraButton = new System.Windows.Forms.Button();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
@@ -170,6 +170,17 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры сети";
+            // 
+            // testNetWithCameraButton
+            // 
+            this.testNetWithCameraButton.Location = new System.Drawing.Point(294, 402);
+            this.testNetWithCameraButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.testNetWithCameraButton.Name = "testNetWithCameraButton";
+            this.testNetWithCameraButton.Size = new System.Drawing.Size(138, 46);
+            this.testNetWithCameraButton.TabIndex = 22;
+            this.testNetWithCameraButton.Text = "Тест с камерой";
+            this.testNetWithCameraButton.UseVisualStyleBackColor = true;
+            this.testNetWithCameraButton.Click += new System.EventHandler(this.testNetWithCameraButton_Click);
             // 
             // label11
             // 
@@ -426,17 +437,6 @@
             this.StatusLabel.Size = new System.Drawing.Size(54, 20);
             this.StatusLabel.TabIndex = 15;
             this.StatusLabel.Text = "NONE";
-            // 
-            // testNetWithCameraButton
-            // 
-            this.testNetWithCameraButton.Location = new System.Drawing.Point(294, 402);
-            this.testNetWithCameraButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.testNetWithCameraButton.Name = "testNetWithCameraButton";
-            this.testNetWithCameraButton.Size = new System.Drawing.Size(138, 46);
-            this.testNetWithCameraButton.TabIndex = 22;
-            this.testNetWithCameraButton.Text = "Тест с камерой";
-            this.testNetWithCameraButton.UseVisualStyleBackColor = true;
-            this.testNetWithCameraButton.Click += new System.EventHandler(this.testNetWithCameraButton_Click);
             // 
             // NeuralNetworksStand
             // 

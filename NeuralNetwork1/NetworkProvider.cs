@@ -19,7 +19,7 @@ namespace NeuralNetwork1
 
         private static NetworkProvider provider;
 
-        public BaseNetwork Net
+        public BaseNetwork Network
         {
             get
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using AForge.Imaging.Filters;
 
 namespace AForge.WindowsForms
 {
@@ -40,7 +41,7 @@ namespace AForge.WindowsForms
         /// <summary>
         /// Желаемый размер изображения после обработки
         /// </summary>
-        public Size processedDesiredSize = new Size(500, 500);
+        public Size processedDesiredSize = new Size(200, 200);
 
         public int margin = 10;
         public int top = 40;
@@ -113,38 +114,33 @@ namespace AForge.WindowsForms
             p.Width = 1;
 
             //  Теперь всю эту муть пилим в обработанное изображение
-            AForge.Imaging.Filters.Grayscale grayFilter = new AForge.Imaging.Filters.Grayscale(0.2125, 0.7154, 0.0721);
-            var uProcessed = grayFilter.Apply(AForge.Imaging.UnmanagedImage.FromManagedImage(original));
+            AForge.Imaging.Filters.Grayscale grayFilter = new Grayscale(0.2125, 0.7154, 0.0721);
+            var uProcessed = grayFilter.Apply(Imaging.UnmanagedImage.FromManagedImage(original));
+            var uOriginal = grayFilter.Apply(Imaging.UnmanagedImage.FromManagedImage(original));
 
+
+            //  Масштабируем изображение 
+            ResizeBilinear originalScaleFilter = new ResizeBilinear(settings.orignalDesiredSize.Width, 
+                settings.orignalDesiredSize.Height);
+
+            ResizeBilinear processedScaleFilter = new ResizeBilinear(settings.processedDesiredSize.Width,
+                settings.processedDesiredSize.Height);
+            uProcessed = processedScaleFilter.Apply(uProcessed);
+            uOriginal = originalScaleFilter.Apply(uOriginal);
             
-            int blockWidth = original.Width / settings.blocksCount;
-            int blockHeight = original.Height / settings.blocksCount;
-            for (int r = 0; r < settings.blocksCount; ++r)
-                for (int c = 0; c < settings.blocksCount; ++c)
-                {
-                    //  Тут ещё обработку сделать
-                    g.DrawRectangle(p, new Rectangle(c * blockWidth, r * blockHeight, blockWidth, blockHeight));
-                }
-
-
-            //  Масштабируем изображение до 500x500 - этого достаточно
-            AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(settings.orignalDesiredSize.Width, settings.orignalDesiredSize.Height);
-            uProcessed = scaleFilter.Apply(uProcessed);
-            original = scaleFilter.Apply(original);
-            g = Graphics.FromImage(original);
             //  Пороговый фильтр применяем. Величина порога берётся из настроек, и меняется на форме
             AForge.Imaging.Filters.BradleyLocalThresholding threshldFilter = new AForge.Imaging.Filters.BradleyLocalThresholding();
             threshldFilter.PixelBrightnessDifferenceLimit = settings.differenceLim;
             threshldFilter.ApplyInPlace(uProcessed);
+            threshldFilter.ApplyInPlace(uOriginal);
 
+            //if (settings.processImg)
+            //{
 
-            if (settings.processImg)
-            {
-             
-                string info = processSample(ref uProcessed);
-                Font f = new Font(FontFamily.GenericSansSerif, 20);
-                g.DrawString(info, f, Brushes.Black, 30, 30);
-            }
+            //    string info = processSample(ref uProcessed);
+            //    Font f = new Font(FontFamily.GenericSansSerif, 20);
+            //    g.DrawString(info, f, Brushes.Black, 30, 30);
+            //}
 
             //  Получить значения сенсоров из обработанного изображения размера 100x100
 
@@ -158,9 +154,9 @@ namespace AForge.WindowsForms
             //            
             //        }
 
-
+            original = uOriginal.ToManagedImage();
             processed = uProcessed.ToManagedImage();
-
+           // g = Graphics.FromImage(original);
             return true;
         }
 

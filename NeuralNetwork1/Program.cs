@@ -19,7 +19,7 @@ namespace NeuralNetwork1
             Application.Run(new NeuralNetworksStand(new Dictionary<string, Func<int[], BaseNetwork>>
             {
                 // Тут можно добавить свои нейросети
-                {"Accord.Net Perseptron", structure => new AccordNet(structure)},
+                {"Accord.Network Perseptron", structure => new AccordNet(structure)},
                 {"Студентческий персептрон", structure => new EvgenNetwork(structure)},
             }));
         }

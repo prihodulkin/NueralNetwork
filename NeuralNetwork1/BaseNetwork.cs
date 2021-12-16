@@ -4,7 +4,7 @@ namespace NeuralNetwork1
 {
     public delegate void TrainProgressHandler(double progress, double error, TimeSpan time);
     /// <summary>
-    /// Базовый класс для реализации как самодельного персептрона, так и обёртки для ActivationNetwork из Accord.Net
+    /// Базовый класс для реализации как самодельного персептрона, так и обёртки для ActivationNetwork из Accord.Network
     /// </summary>
     public abstract class BaseNetwork
     {
