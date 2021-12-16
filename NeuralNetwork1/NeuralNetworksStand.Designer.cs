@@ -1,6 +1,6 @@
 ﻿namespace NeuralNetwork1
 {
-    partial class NeuralNetworksStand
+    partial class NeuralNetworksStand<T> where T : ISampleData, new()
     {
         /// <summary>
         /// Обязательная переменная конструктора.

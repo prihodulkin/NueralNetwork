@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork1
 {
-    interface IGenerator<T> where T: ISampleData,  new()
+    public interface IGenerator<T> where T: ISampleData,  new()
     {
         int ClassesCount { get; set; }
         Sample<T> GenerateFigure();

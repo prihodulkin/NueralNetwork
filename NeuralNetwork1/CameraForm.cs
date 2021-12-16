@@ -12,12 +12,13 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using System.Diagnostics;
 using System.IO.Ports;
+using NeuralNetwork1;
 
 namespace AForge.WindowsForms
 {
     delegate void FormUpdateDelegate();
 
-    public class MainForm : Form
+    public class CameraForm<T>  : Form where T :ISampleData, new()
     {
         /// <summary>
         /// Класс, реализующий всю логику работы
@@ -80,7 +81,7 @@ namespace AForge.WindowsForms
             return;
         }
 
-        public MainForm()
+        public CameraForm()
         {
             InitializeComponent();
             // Список камер получаем
@@ -483,7 +484,7 @@ namespace AForge.WindowsForms
             this.resolutionsBox.Size = new System.Drawing.Size(325, 28);
             this.resolutionsBox.TabIndex = 34;
             // 
-            // MainForm
+            // CameraForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -500,7 +501,7 @@ namespace AForge.WindowsForms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "MainForm";
+            this.Name = "CameraForm";
             this.Text = "Распознавалка";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);

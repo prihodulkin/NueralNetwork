@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork1", "NeuralNet
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45C5FB36-7A5D-4C48-9E7E-34742725197B}"
 	ProjectSection(SolutionItems) = preProject
-		NeuralNetwork1\MainForm.cs = NeuralNetwork1\MainForm.cs
+		NeuralNetwork1\CameraForm.cs = NeuralNetwork1\CameraForm.cs
 	EndProjectSection
 EndProject
 Global
