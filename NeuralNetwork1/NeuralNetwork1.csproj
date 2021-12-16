@@ -102,6 +102,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs" />
+    <Compile Include="NetworkProvider.cs" />
     <Compile Include="NeuralNetworksStand.cs">
       <SubType>Form</SubType>
     </Compile>

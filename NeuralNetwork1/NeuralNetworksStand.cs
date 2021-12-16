@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AForge.WindowsForms;
 
 namespace NeuralNetwork1
 {
@@ -15,23 +16,6 @@ namespace NeuralNetwork1
         /// </summary>
         IGenerator generator = new FiguresGenerator();
 
-        /// <summary>
-        /// Текущая выбранная через селектор нейросеть
-        /// </summary>
-        public BaseNetwork Net
-        {
-            get
-            {
-                var selectedItem = (string) netTypeBox.SelectedItem;
-                if (!networksCache.ContainsKey(selectedItem))
-                    networksCache.Add(selectedItem, CreateNetwork(selectedItem));
-
-                return networksCache[selectedItem];
-            }
-        }
-
-        private readonly Dictionary<string, Func<int[], BaseNetwork>> networksFabric;
-        private Dictionary<string, BaseNetwork> networksCache = new Dictionary<string, BaseNetwork>();
 
         /// <summary>
         /// Конструктор формы стенда для работы с сетями
@@ -40,9 +24,13 @@ namespace NeuralNetwork1
         public NeuralNetworksStand(Dictionary<string, Func<int[], BaseNetwork>> networksFabric)
         {
             InitializeComponent();
-            this.networksFabric = networksFabric;
-            netTypeBox.Items.AddRange(this.networksFabric.Keys.Select(s => (object) s).ToArray());
+            netTypeBox.Items.AddRange(networksFabric.Keys.Select(s => (object) s).ToArray());
             netTypeBox.SelectedIndex = 0;
+            NetworkProvider.Get().Init((string) netTypeBox.SelectedItem, 
+                networksFabric,
+                CurrentNetworkStructure(),
+                UpdateLearningInfo);
+
             generator.ClassesCount = (int) classCounter.Value;
             button3_Click(this, null);
             pictureBox1.Image = Properties.Resources.Title;
@@ -79,7 +67,7 @@ namespace NeuralNetwork1
         {
             Sample fig = generator.GenerateFigure();
 
-            Net.Predict(fig);
+            NetworkProvider.Get().Net.Predict(fig);
 
             set_result(fig);
         }
@@ -102,7 +90,7 @@ namespace NeuralNetwork1
             try
             {
                 //  Обучение запускаем асинхронно, чтобы не блокировать форму
-                var curNet = Net;
+                var curNet = NetworkProvider.Get().Net;
                 double f = await Task.Run(() => curNet.TrainOnDataSet(samples, epoches, acceptable_error, parallel));
                 label1.Text = "Щелкните на картинку для теста нового образа";
                 label1.ForeColor = Color.Green;
@@ -139,7 +127,7 @@ namespace NeuralNetwork1
             for (int i = 0; i < (int) TrainingSizeCounter.Value; i++)
                 samples.AddSample(generator.GenerateFigure());
 
-            double accuracy = samples.TestNeuralNetwork(Net);
+            double accuracy = samples.TestNeuralNetwork(NetworkProvider.Get().Net);
 
             StatusLabel.Text = $"Точность на тестовой выборке : {accuracy * 100,5:F2}%";
             StatusLabel.ForeColor = accuracy * 100 >= AccuracyCounter.Value ? Color.Green : Color.Red;
@@ -161,10 +149,8 @@ namespace NeuralNetwork1
             }
 
             // Чистим старые подписки сетей
-            foreach (var network in networksCache.Values)
-                network.TrainProgress -= UpdateLearningInfo;
-            // Пересоздаём все сети с новой структурой
-            networksCache = networksCache.ToDictionary(oldNet => oldNet.Key, oldNet => CreateNetwork(oldNet.Key));
+            NetworkProvider.Get().Clean();
+            NetworkProvider.Get().NetworkStructure = structure;
         }
 
         private int[] CurrentNetworkStructure()
@@ -183,19 +169,12 @@ namespace NeuralNetwork1
 
         private void btnTrainOne_Click(object sender, EventArgs e)
         {
-            if (Net == null) return;
+            if (NetworkProvider.Get().Net == null) return;
             Sample fig = generator.GenerateFigure();
             pictureBox1.Image = generator.GenerateBitmap();
             pictureBox1.Invalidate();
-            Net.Train(fig, 0.00005, parallelCheckBox.Checked);
+            NetworkProvider.Get().Net.Train(fig, 0.00005, parallelCheckBox.Checked);
             set_result(fig);
-        }
-
-        private BaseNetwork CreateNetwork(string networkName)
-        {
-            var network = networksFabric[networkName](CurrentNetworkStructure());
-            network.TrainProgress += UpdateLearningInfo;
-            return network;
         }
 
         private void recreateNetButton_MouseEnter(object sender, EventArgs e)
@@ -211,6 +190,16 @@ namespace NeuralNetwork1
         private void testNetButton_MouseEnter(object sender, EventArgs e)
         {
             infoStatusLabel.Text = "Тестировать нейросеть на тестовой выборке такого же размера";
+        }
+
+        private void testNetWithCameraButton_Click(object sender, EventArgs e)
+        {
+            new MainForm().Show();
+        }
+
+        private void netTypeBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            NetworkProvider.Get().SelectedNetwork = (string) netTypeBox.SelectedItem;
         }
     }
 }

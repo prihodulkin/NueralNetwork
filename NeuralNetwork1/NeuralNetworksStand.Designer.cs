@@ -57,6 +57,7 @@
             this.elapsedTimeLabel = new System.Windows.Forms.Label();
             this.вапрвапрToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusLabel = new System.Windows.Forms.Label();
+            this.testNetWithCameraButton = new System.Windows.Forms.Button();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
@@ -144,6 +145,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.testNetWithCameraButton);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.netTypeBox);
             this.groupBox1.Controls.Add(this.parallelCheckBox);
@@ -188,6 +190,7 @@
             this.netTypeBox.Name = "netTypeBox";
             this.netTypeBox.Size = new System.Drawing.Size(180, 28);
             this.netTypeBox.TabIndex = 20;
+            this.netTypeBox.SelectedIndexChanged += new System.EventHandler(this.netTypeBox_SelectedIndexChanged);
             // 
             // parallelCheckBox
             // 
@@ -259,10 +262,10 @@
             // 
             // testNetButton
             // 
-            this.testNetButton.Location = new System.Drawing.Point(244, 402);
+            this.testNetButton.Location = new System.Drawing.Point(148, 402);
             this.testNetButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.testNetButton.Name = "testNetButton";
-            this.testNetButton.Size = new System.Drawing.Size(150, 46);
+            this.testNetButton.Size = new System.Drawing.Size(138, 46);
             this.testNetButton.TabIndex = 14;
             this.testNetButton.Text = "Тест";
             this.testNetButton.UseVisualStyleBackColor = true;
@@ -271,10 +274,10 @@
             // 
             // netTrainButton
             // 
-            this.netTrainButton.Location = new System.Drawing.Point(46, 402);
+            this.netTrainButton.Location = new System.Drawing.Point(8, 402);
             this.netTrainButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.netTrainButton.Name = "netTrainButton";
-            this.netTrainButton.Size = new System.Drawing.Size(150, 46);
+            this.netTrainButton.Size = new System.Drawing.Size(132, 46);
             this.netTrainButton.TabIndex = 11;
             this.netTrainButton.Text = "Обучить";
             this.netTrainButton.UseVisualStyleBackColor = true;
@@ -424,6 +427,17 @@
             this.StatusLabel.TabIndex = 15;
             this.StatusLabel.Text = "NONE";
             // 
+            // testNetWithCameraButton
+            // 
+            this.testNetWithCameraButton.Location = new System.Drawing.Point(294, 402);
+            this.testNetWithCameraButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.testNetWithCameraButton.Name = "testNetWithCameraButton";
+            this.testNetWithCameraButton.Size = new System.Drawing.Size(138, 46);
+            this.testNetWithCameraButton.TabIndex = 22;
+            this.testNetWithCameraButton.Text = "Тест с камерой";
+            this.testNetWithCameraButton.UseVisualStyleBackColor = true;
+            this.testNetWithCameraButton.Click += new System.EventHandler(this.testNetWithCameraButton_Click);
+            // 
             // NeuralNetworksStand
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -484,6 +498,7 @@
         private System.Windows.Forms.ComboBox netTypeBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label StatusLabel;
+        private System.Windows.Forms.Button testNetWithCameraButton;
     }
 }
 
