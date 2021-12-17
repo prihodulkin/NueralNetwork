@@ -45,10 +45,6 @@ namespace NeuralNetwork1
         public static double[] ToInput(this Bitmap bitmap)
         {
             double[] result = new double[bitmap.Width + bitmap.Height];
-            //var fastBitmap = new FastBitmap(bitmap);
-            //fastBitmap.Lock();
-            //using (var fastBitmap = bitmap.FastLock())
-            //{
             var arr = new Color[bitmap.Width, bitmap.Height];
                 for (int x = 0; x < bitmap.Width; x++)
                 {
@@ -64,8 +60,7 @@ namespace NeuralNetwork1
                         }
                     }
                 }
-           // fastBitmap.Unlock();
-           // }
+           
             return result;
         }
 

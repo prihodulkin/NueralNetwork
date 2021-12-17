@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace NeuralNetwork1
 {
+    /// <summary>
+    /// класс-синглтон, содержащий нейросеть и её параметры
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     class NetworkProvider<T> where T: ISampleData, new()
     {
         public static NetworkProvider<T> Get()

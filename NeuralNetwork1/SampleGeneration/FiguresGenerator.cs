@@ -4,57 +4,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeuralNetwork1.SampleGeneration;
 
 namespace NeuralNetwork1
 {
-    /// <summary>
-    /// Тип фигуры
-    /// </summary>
-    public enum FigureType : byte { Triangle = 0, Rectangle, Circle, Sinusiod, Undef };
-
-    public class FigureSampleData : ISampleData
-    {
-        public FigureType FigureType { get; private set; }
-
-        public FigureSampleData(){}
-
-        public FigureSampleData(FigureType figureType)
-        {
-            FigureType = figureType;
-        }
-
-        public void ByInt(int i)
-        {
-            FigureType = (FigureType) i;
-        }
-
-        public bool IsUndefined()
-        {
-            return FigureType == FigureType.Undef;
-        }
-
-        public int ToInt()
-        {
-            return (int) FigureType;
-        }
-
-        public bool Equals(ISampleData other)
-        {
-            if (other is FigureSampleData)
-            {
-                return FigureType == (other as FigureSampleData).FigureType;
-            }
-
-            return false;
-        }
-
-        public override string ToString()
-        {
-            return FigureType.ToString();
-        }
-    }
-
-
     public class FiguresGenerator: IGenerator<FigureSampleData>
     {
         /// <summary>
