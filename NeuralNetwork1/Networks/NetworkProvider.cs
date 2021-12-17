@@ -30,6 +30,10 @@ namespace NeuralNetwork1
             }
         }
 
+        public int ImageSize => NetworkStructure[0]/2;
+
+        
+
         public void Init(string selectedNetwork,
             Dictionary<string, Func<int[], BaseNetwork<T>>> networksFabric,
             int[] networkStructure,
@@ -59,7 +63,27 @@ namespace NeuralNetwork1
         }
 
         public TrainProgressHandler UpdateLearningInfo { get; set; }
-        public int[] NetworkStructure { get; set; }
+
+        public int[] NetworkStructure
+        {
+            get;
+            set;
+            //get
+            //{
+            //    return (int[])NetworkStructure.Clone();
+            //}
+            //set
+            //{
+            //    // if (value == null) return;
+            //    //foreach (var i in value)
+            //    //{
+            //    //    if (i < 0) throw new ArgumentException("Количество нейронов в слое должно быть положительным");
+            //    //}
+            //    //if (value[0] % 2 != 0) throw new ArgumentException("Количество нейронов во входном слое должно быть четным");
+            //    NetworkStructure = value; //int[])value.Clone();
+            //}
+        }
+
         public string SelectedNetwork { get; set; }
         private Dictionary<string, Func<int[], BaseNetwork<T>>> networksFabric;
         private Dictionary<string, BaseNetwork<T>> networksCache = new Dictionary<string, BaseNetwork<T>>();

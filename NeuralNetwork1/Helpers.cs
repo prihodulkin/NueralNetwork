@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FastBitmapLib;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +42,26 @@ namespace NeuralNetwork1
             return 1.0 / (Math.Exp(-value) + 1);
         }
 
-       
+        public static double[] ToInput(this Bitmap bitmap)
+        {
+            double[] result = new double[bitmap.Width + bitmap.Height];
+            using (var fastBitmap = bitmap.FastLock())
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    for (int y = 0; y < bitmap.Height; y++)
+                    {
+                        var c = fastBitmap.GetPixel(x, y);
+                        if (c == Color.Black)
+                        {
+                            result[x]++;
+                            result[y + bitmap.Width]++;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 }

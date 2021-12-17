@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using AForge.Imaging.Filters;
+using NeuralNetwork1;
 
 namespace AForge.WindowsForms
 {
@@ -50,7 +51,7 @@ namespace AForge.WindowsForms
         /// <summary>
         /// Второй этап обработки
         /// </summary>
-        public bool processImg = false;
+        public bool classify = false;
 
         /// <summary>
         /// Порог при отсечении по цвету 
@@ -64,7 +65,7 @@ namespace AForge.WindowsForms
         public void decLeft() { if (left > 0) --left; }
     }
 
-    internal class MagicEye
+    internal class MagicEye<T> where T: ISampleData, new()
     {
         /// <summary>
         /// Обработанное изображение
@@ -80,10 +81,13 @@ namespace AForge.WindowsForms
         /// </summary>
         public Settings settings = new Settings();
 
+        public double[] Data;
+
 
 
         public MagicEye()
         {
+            Data = new double[NetworkProvider<T>.Get().ImageSize * 2];
         }
 
         public bool ProcessImage(Bitmap bitmap)
@@ -134,14 +138,7 @@ namespace AForge.WindowsForms
             threshldFilter.ApplyInPlace(uProcessed);
             threshldFilter.ApplyInPlace(uOriginal);
 
-            //if (settings.processImg)
-            //{
-
-            //    string info = processSample(ref uProcessed);
-            //    Font f = new Font(FontFamily.GenericSansSerif, 20);
-            //    g.DrawString(info, f, Brushes.Black, 30, 30);
-            //}
-
+           
             //  Получить значения сенсоров из обработанного изображения размера 100x100
 
             //  Можно вывести информацию на изображение!
@@ -156,7 +153,13 @@ namespace AForge.WindowsForms
 
             original = uOriginal.ToManagedImage();
             processed = uProcessed.ToManagedImage();
-           // g = Graphics.FromImage(original);
+            if (settings.classify)
+            {
+
+                Data = processed.ToInput();
+            }
+
+            // g = Graphics.FromImage(original);
             return true;
         }
 

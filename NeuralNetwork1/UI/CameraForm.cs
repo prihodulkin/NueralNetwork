@@ -23,7 +23,7 @@ namespace AForge.WindowsForms
         /// <summary>
         /// Класс, реализующий всю логику работы
         /// </summary>
-        private Controller controller = null;
+        private Controller<T> controller = null;
 
         /// <summary>
         /// Событие для синхронизации таймера
@@ -44,6 +44,10 @@ namespace AForge.WindowsForms
         /// Таймер для измерения производительности (времени на обработку кадра)
         /// </summary>
         private Stopwatch sw = new Stopwatch();
+        private CheckBox classifyCheckBox;
+        private Panel controlPanel;
+        private Label classifiedObjectLabel;
+        private Button ClassifyButton;
 
         /// <summary>
         /// Таймер для обновления объектов интерфейса
@@ -98,7 +102,7 @@ namespace AForge.WindowsForms
             {
                 MessageBox.Show("А нет у вас камеры!", "Ошибочка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            controller = new Controller(new FormUpdateDelegate(UpdateFormFields));
+            controller = new Controller<T>(new FormUpdateDelegate(UpdateFormFields));
 //            updateTmr = new System.Threading.Timer(Tick, evnt, 500, 100);
         }
 
@@ -204,7 +208,7 @@ namespace AForge.WindowsForms
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            controller.settings.processImg = checkBox1.Checked;
+            controller.settings.classify = classifyCheckBox.Checked;
         }
 
 
@@ -241,7 +245,6 @@ namespace AForge.WindowsForms
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.originalImageBox = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tresholdTrackBar = new System.Windows.Forms.TrackBar();
             this.label4 = new System.Windows.Forms.Label();
@@ -250,10 +253,11 @@ namespace AForge.WindowsForms
             this.borderTrackBar = new System.Windows.Forms.TrackBar();
             this.statusLabel = new System.Windows.Forms.Label();
             this.ticksLabel = new System.Windows.Forms.Label();
-            this.controlPanel = new System.Windows.Forms.Panel();
-            this.ProcessButton = new System.Windows.Forms.Button();
-            this.PlayButton = new System.Windows.Forms.Button();
             this.resolutionsBox = new System.Windows.Forms.ComboBox();
+            this.controlPanel = new System.Windows.Forms.Panel();
+            this.classifyCheckBox = new System.Windows.Forms.CheckBox();
+            this.ClassifyButton = new System.Windows.Forms.Button();
+            this.classifiedObjectLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             this.panel2.SuspendLayout();
@@ -322,7 +326,7 @@ namespace AForge.WindowsForms
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.checkBox1);
+            this.panel2.Controls.Add(this.classifyCheckBox);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.tresholdTrackBar);
             this.panel2.Controls.Add(this.label4);
@@ -334,18 +338,6 @@ namespace AForge.WindowsForms
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(662, 310);
             this.panel2.TabIndex = 18;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(261, 140);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(128, 24);
-            this.checkBox1.TabIndex = 24;
-            this.checkBox1.Text = "Обработать";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label2
             // 
@@ -437,42 +429,6 @@ namespace AForge.WindowsForms
             this.ticksLabel.TabIndex = 30;
             this.ticksLabel.Text = "Ticks for frame processing";
             // 
-            // controlPanel
-            // 
-            this.controlPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.controlPanel.Controls.Add(this.ProcessButton);
-            this.controlPanel.Controls.Add(this.PlayButton);
-            this.controlPanel.Enabled = false;
-            this.controlPanel.Location = new System.Drawing.Point(778, 354);
-            this.controlPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(665, 90);
-            this.controlPanel.TabIndex = 33;
-            // 
-            // ProcessButton
-            // 
-            this.ProcessButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ProcessButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ProcessButton.Location = new System.Drawing.Point(249, 20);
-            this.ProcessButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.ProcessButton.Name = "ProcessButton";
-            this.ProcessButton.Size = new System.Drawing.Size(188, 46);
-            this.ProcessButton.TabIndex = 26;
-            this.ProcessButton.Text = "Обработать";
-            this.ProcessButton.UseVisualStyleBackColor = true;
-            // 
-            // PlayButton
-            // 
-            this.PlayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.PlayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.PlayButton.Location = new System.Drawing.Point(446, 20);
-            this.PlayButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.PlayButton.Name = "PlayButton";
-            this.PlayButton.Size = new System.Drawing.Size(188, 46);
-            this.PlayButton.TabIndex = 25;
-            this.PlayButton.Text = "Играть";
-            this.PlayButton.UseVisualStyleBackColor = true;
-            // 
             // resolutionsBox
             // 
             this.resolutionsBox.AllowDrop = true;
@@ -483,6 +439,52 @@ namespace AForge.WindowsForms
             this.resolutionsBox.Name = "resolutionsBox";
             this.resolutionsBox.Size = new System.Drawing.Size(325, 28);
             this.resolutionsBox.TabIndex = 34;
+            // 
+            // controlPanel
+            // 
+            this.controlPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.controlPanel.Controls.Add(this.classifiedObjectLabel);
+            this.controlPanel.Controls.Add(this.ClassifyButton);
+            this.controlPanel.Enabled = false;
+            this.controlPanel.Location = new System.Drawing.Point(778, 354);
+            this.controlPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.controlPanel.Name = "controlPanel";
+            this.controlPanel.Size = new System.Drawing.Size(665, 90);
+            this.controlPanel.TabIndex = 33;
+            // 
+            // classifyCheckBox
+            // 
+            this.classifyCheckBox.AutoSize = true;
+            this.classifyCheckBox.Location = new System.Drawing.Point(261, 140);
+            this.classifyCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.classifyCheckBox.Name = "classifyCheckBox";
+            this.classifyCheckBox.Size = new System.Drawing.Size(306, 24);
+            this.classifyCheckBox.TabIndex = 24;
+            this.classifyCheckBox.Text = "Классифицировать автоматически";
+            this.classifyCheckBox.UseVisualStyleBackColor = true;
+            this.classifyCheckBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // ClassifyButton
+            // 
+            this.ClassifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ClassifyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ClassifyButton.Location = new System.Drawing.Point(17, 27);
+            this.ClassifyButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ClassifyButton.Name = "ClassifyButton";
+            this.ClassifyButton.Size = new System.Drawing.Size(203, 34);
+            this.ClassifyButton.TabIndex = 26;
+            this.ClassifyButton.Text = "Классифицировать";
+            this.ClassifyButton.UseVisualStyleBackColor = true;
+            // 
+            // classifiedObjectLabel
+            // 
+            this.classifiedObjectLabel.AutoSize = true;
+            this.classifiedObjectLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.classifiedObjectLabel.Location = new System.Drawing.Point(275, 31);
+            this.classifiedObjectLabel.Name = "classifiedObjectLabel";
+            this.classifiedObjectLabel.Size = new System.Drawing.Size(216, 25);
+            this.classifiedObjectLabel.TabIndex = 27;
+            this.classifiedObjectLabel.Text = "Объект не определён";
             // 
             // CameraForm
             // 
@@ -513,6 +515,7 @@ namespace AForge.WindowsForms
             ((System.ComponentModel.ISupportInitialize)(this.marginTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.borderTrackBar)).EndInit();
             this.controlPanel.ResumeLayout(false);
+            this.controlPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -533,11 +536,7 @@ namespace AForge.WindowsForms
         private System.Windows.Forms.Label ticksLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar tresholdTrackBar;
-        private System.Windows.Forms.Panel controlPanel;
-        private System.Windows.Forms.Button ProcessButton;
-        private System.Windows.Forms.Button PlayButton;
         private System.Windows.Forms.ComboBox resolutionsBox;
-        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

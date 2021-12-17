@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Drawing;
+using NeuralNetwork1;
 
 namespace AForge.WindowsForms
 {
@@ -14,8 +15,14 @@ namespace AForge.WindowsForms
     /// <summary>
     /// Класс-диспетчер, управляющий всеми остальными и служащий для связи с формой
     /// </summary>
-    class Controller
+    class Controller<T> where T: ISampleData, new()
     {
+        public BaseNetwork<T> Network;
+
+        public  Controller()
+        {
+            Network = NetworkProvider<T>.Get().Network;
+        }
         //  Технически должен запускаться в отдельном потоке
 
         /// <summary>
@@ -41,7 +48,7 @@ namespace AForge.WindowsForms
         /// <summa>
         /// Анализатор изображения - выполняет преобразования изображения с камеры и сопоставление с шаблонами
         /// </summary>
-        public MagicEye processor = new MagicEye();
+        public MagicEye<T> processor = new MagicEye<T>();
         
         /// <summary>
         /// Проверить, работает ли это
@@ -70,6 +77,7 @@ namespace AForge.WindowsForms
         public Controller(FormUpdateDelegate updater)
         {
             formUpdateDelegate = updater;
+            Network = NetworkProvider<T>.Get().Network;
         }
         
         /// <summary>
@@ -113,7 +121,11 @@ namespace AForge.WindowsForms
             return processor.processed;
         }
 
-
+        public T GetSampleData()
+        {
+            return Network.Predict(
+                new Sample<T>(processor.Data, 0, new T()));
+        }
 
     }
 }

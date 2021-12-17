@@ -48,6 +48,8 @@ namespace NeuralNetwork1
             return sample.ProcessPrediction(Compute(sample.input));
         }
 
+        
+
         /// <summary>
         /// Обёртка над событием для оповещения подписчиков
         /// </summary>
