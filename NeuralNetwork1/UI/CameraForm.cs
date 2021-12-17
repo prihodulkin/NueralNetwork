@@ -68,9 +68,11 @@ namespace AForge.WindowsForms
                 return;
             }
 
+            classifiedObjectLabel.Text = controller.GetSampleData().ToString();
             sw.Stop();
             ticksLabel.Text = "Тики : " + sw.Elapsed.ToString();
             originalImageBox.Image = controller.GetOriginalImage();
+
            
             //processedImgBox.Image = controller.GetProcessedImage();
         }

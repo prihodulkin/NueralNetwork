@@ -153,12 +153,12 @@ namespace AForge.WindowsForms
 
             original = uOriginal.ToManagedImage();
             processed = uProcessed.ToManagedImage();
-            if (settings.classify)
-            {
+            //if (settings.classify)
+            //{
 
-                Data = processed.ToInput();
-            }
-
+            //    Data = processed.ToInput();
+            //}
+            Data = processed.ToInput();
             // g = Graphics.FromImage(original);
             return true;
         }

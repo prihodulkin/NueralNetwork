@@ -39,7 +39,7 @@ namespace NeuralNetwork1
             //  Клонируем массивчик
             input = (double[]) inputValues.Clone();
             Output = new double[classesCount];
-            if (!sampleClass.IsUndefined()) Output[sampleClass.ToInt()] = 1;
+            if (!sampleClass.IsUndefined()&&Output.Length>0) Output[sampleClass.ToInt()] = 1;
 
 
             recognizedClass = new T();
