@@ -31,6 +31,5 @@ namespace NeuralNetwork1
         /// <returns></returns>
         Bitmap GenerateBitmap();
 
-        
     }
 }

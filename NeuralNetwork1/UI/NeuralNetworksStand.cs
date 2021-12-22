@@ -100,6 +100,10 @@ namespace NeuralNetwork1
                 trainOneButton.Enabled = true;
                 StatusLabel.Text = "Ошибка: " + f;
                 StatusLabel.ForeColor = Color.Green;
+                if (curNet is EvgenNetwork<T>)
+                {
+                    (curNet as EvgenNetwork<T>).Save("network.net");
+                }
                 return f;
             }
             catch (Exception e)

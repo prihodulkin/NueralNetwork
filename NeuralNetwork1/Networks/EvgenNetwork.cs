@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace NeuralNetwork1
 {
@@ -253,6 +254,70 @@ namespace NeuralNetwork1
         {
             ComputeValues(input);
             return Values.Last().Take(Values.Last().Length - 1).ToArray();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"{Weights.Length+1}");
+            for (int n = 0; n < Weights.Length; n++)
+            {
+                stringBuilder.AppendLine($"s {Weights[n].GetLength(0)} {Weights[n].GetLength(1)}");
+                for (int i = 0; i < Weights[n].GetLength(0); i++)
+                {
+                    for (int j = 0; j < Weights[n].GetLength(1); j++)
+                    {
+                        stringBuilder.Append(Weights[n][i, j]);
+                        stringBuilder.Append(' ');
+                    }
+                    stringBuilder.Append("\n");
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        public void Save(string filepath)
+        {
+            File.WriteAllText(filepath, this.ToString());
+        }
+
+        public EvgenNetwork(string filepath)
+        {
+            using (StreamReader sr = File.OpenText(filepath))
+            {
+                var layersCount = int.Parse(sr.ReadLine());
+                Values = new double[layersCount][];
+                Errors = new double[layersCount][];
+                Weights = new double[layersCount - 1][,];
+                for (int n = 0; n < layersCount-1; n++)
+                {
+                    var s = sr.ReadLine();
+                    var sSplit = s.Split();
+                    (int width, int height) = (int.Parse(sSplit[1]), int.Parse(sSplit[2]));
+                    Weights[n] = new double[width, height];
+                    for (int i = 0; i < width; i++)
+                    {
+                        s = sr.ReadLine();
+                        sSplit = s.Split();
+                      
+                        for (int j = 0; j < height; j++)
+                        {
+                            Weights[n][i, j] = double.Parse(sSplit[j]);
+                        }
+                    }
+                }
+
+                Errors[0] = new double[Weights[0].GetLength(0) - 1];
+                Values[0] = new double[Weights[0].GetLength(0)];
+                for (int i = 0; i < Weights.Length; i++)
+                {
+                    Errors[i + 1] = new double[Weights[i].GetLength(1)];
+                    Values[i + 1] = new double[Weights[i].GetLength(1)+1];
+                }
+
+            }
+            
         }
     }
 }
