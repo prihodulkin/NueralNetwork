@@ -19,6 +19,8 @@ namespace NeuralNetwork1
         /// </summary>
         int ClassesCount { get; set; }
 
+        int MaxClassesCount { get; }
+
         /// <summary>
         /// генерация фигуры для обработки нейросетью
         /// </summary>

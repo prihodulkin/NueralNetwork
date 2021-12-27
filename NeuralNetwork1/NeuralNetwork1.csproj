@@ -100,6 +100,8 @@
     <Compile Include="Camera\Controller.cs" />
     <Compile Include="Networks\EvgenNetwork.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="SampleGeneration\AlphabetGenerator.cs" />
+    <Compile Include="SampleGeneration\AlphabetSampleData.cs" />
     <Compile Include="SampleGeneration\FigureSamleData.cs" />
     <Compile Include="SampleGeneration\IGenerator.cs" />
     <Compile Include="UI\CameraForm.cs">

@@ -16,6 +16,7 @@ namespace NeuralNetwork1.SampleGeneration
     {
         public FigureType FigureType { get; private set; }
 
+
         /// <summary>
         /// нужен для удовлетоворения требования, которое не получилось внести в интерфейс
         /// </summary>

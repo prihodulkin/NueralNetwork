@@ -24,6 +24,7 @@ namespace NeuralNetwork1
         public NeuralNetworksStand(Dictionary<string, Func<int[], BaseNetwork<T>>> networksFabric, IGenerator<T> generator)
         {
             InitializeComponent();
+            classCounter.Maximum = generator.MaxClassesCount;
             this.generator = generator;
             netTypeBox.Items.AddRange(networksFabric.Keys.Select(s => (object) s).ToArray());
             netTypeBox.SelectedIndex = 0;
@@ -205,6 +206,11 @@ namespace NeuralNetwork1
         private void netTypeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
              NetworkProvider<T>.Get().SelectedNetwork = (string) netTypeBox.SelectedItem;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -15,14 +15,23 @@ namespace NeuralNetwork1
         [STAThread]
         static void Main()
         {
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new NeuralNetworksStand<FigureSampleData> (new Dictionary<string, Func<int[], BaseNetwork<FigureSampleData>>>
+            //{
+            //    // Тут можно добавить свои нейросети
+            //    {"Accord.Network Perseptron", structure => new AccordNet<FigureSampleData>(structure)},
+            //    {"Студентческий персептрон", structure => new EvgenNetwork<FigureSampleData>("network.net")},
+            //}, new FiguresGenerator()));
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NeuralNetworksStand<FigureSampleData> (new Dictionary<string, Func<int[], BaseNetwork<FigureSampleData>>>
+            Application.Run(new NeuralNetworksStand<AlphabetSampleData > (new Dictionary<string, Func<int[], BaseNetwork<AlphabetSampleData>>>
             {
                 // Тут можно добавить свои нейросети
-                {"Accord.Network Perseptron", structure => new AccordNet<FigureSampleData>(structure)},
-                {"Студентческий персептрон", structure => new EvgenNetwork<FigureSampleData>("network.net")},
-            }, new FiguresGenerator()));
+                {"Accord.Network Perseptron", structure => new AccordNet<AlphabetSampleData>(structure)},
+                {"Студентческий персептрон", structure => new EvgenNetwork<AlphabetSampleData>(structure)},
+            }, new AlphabetGenerator()));
         }
     }
 }

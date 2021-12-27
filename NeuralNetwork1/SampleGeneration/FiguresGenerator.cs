@@ -18,6 +18,8 @@ namespace NeuralNetwork1
         //  private int margin = 50;
         private Random rand = new Random();
 
+       
+
         /// <summary>
         /// Текущая сгенерированная фигура
         /// </summary>
@@ -42,6 +44,8 @@ namespace NeuralNetwork1
         /// Диапазон разброса размера фигур
         /// </summary>
         private int FigureSize { get; set; } = 100;
+
+        int IGenerator<FigureSampleData>.MaxClassesCount => 4;
 
         /// <summary>
         /// Очистка образа
