@@ -103,7 +103,7 @@ namespace NeuralNetwork1
                 StatusLabel.ForeColor = Color.Green;
                 if (curNet is EvgenNetwork<T>)
                 {
-                    (curNet as EvgenNetwork<T>).Save("network.net");
+                    (curNet as EvgenNetwork<T>).Save("..\\..\\network.net");
                 }
                 return f;
             }

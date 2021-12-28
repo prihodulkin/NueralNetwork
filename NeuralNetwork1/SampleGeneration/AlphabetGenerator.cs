@@ -13,7 +13,7 @@ namespace NeuralNetwork1.SampleGeneration
     {
         public int ClassesCount { get; set; } = 10;
 
-        const string AlphabetPath = "..\\..\\Alphabet\\";
+        const string AlphabetPath = "..\\..\\Datasets\\Alphabet1\\";
 
         private Bitmap currentBitmap;
 
